@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
-        <title>JS Bin</title>
+        <title>myCalender-v1.0</title>
         <style>
             * {
                 margin: 0;
@@ -41,9 +41,25 @@
                 text-align: end;
             }
         </style>
-        <script src="script.js"></script>
     </head>
     <body>
         <div class="wrapper"></div>
+        <script>
+            const wrapper = document.querySelector("div");
+            Array.from({ length: 24 }, (val, idx) => {
+            const slot = document.createElement("div");
+            slot.className = `slot s-${idx + 1}-00`;
+            const time = document.createElement("div");
+            time.className = "time";
+            time.innerHTML = `${idx + 1 !== 12 ? (idx + 1) % 12 : idx + 1}:00 ${
+                idx + 1 >= 12 && idx + 1 < 24 ? "pm" : "am"
+            }`;
+            slot.appendChild(time);
+            const box = document.createElement("div");
+            box.className = "box";
+            slot.appendChild(box);
+            wrapper.appendChild(slot);
+            });
+        </script>
     </body>
 </html>
