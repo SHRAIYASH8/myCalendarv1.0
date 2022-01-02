@@ -60,6 +60,79 @@
             slot.appendChild(box);
             wrapper.appendChild(slot);
             });
+            const meetings = [
+            {
+                title: "my meeting",
+                begin: "00:30",
+                end: "3:00",
+                color: "red"
+            },
+            {
+                title: "going to meet friends",
+                begin: "4:30",
+                end: "7:30",
+                color: "blue"
+            },
+            {
+                title: "evening sync",
+                begin: "6:10",
+                end: "10:00",
+                color: "cyan"
+            },
+            {
+                title: "off for snacks",
+                begin: "7:00",
+                end: "9:15",
+                color: "indianred"
+            }
+            ];
+            meetings.map((e, id) => {
+            const meeting = document.createElement("div");
+            const duration =
+                parseInt(e.end.split(":")[0]) +
+                parseInt(e.end.split(":")[1]) / 60 -
+                parseInt(e.begin.split(":")[0]) -
+                parseInt(e.begin.split(":")[1]) / 60;
+            meeting.style.backgroundColor = e.color;
+            meeting.style.height = `${duration * 50}px`;
+            meeting.style.width = `450px`;
+            meeting.style.position = "absolute";
+            meeting.style.top = "0";
+            meeting.style.left = "0";
+            meeting.style.right = "0";
+            meeting.style.bottom = "0";
+            meeting.style.padding = "0";
+            meeting.style.margin = "0";
+            meeting.style.outline = "1px solid white";
+            meeting.style.borderRadius = "5px";
+            meeting.style.zIndex = "1";
+            meeting.style.transform = `translateY(${Math.floor(
+                Math.floor(50 * parseInt(e.begin.split(":")[1])) / 60
+            )}px)`;
+            //check conflict meetings
+            const currentStart =
+                parseInt(e.begin.split(":")[0]) + parseInt(e.begin.split(":")[1]) / 60;
+            const conflicts = meetings.filter((elt, idx) => {
+                const start =
+                parseInt(elt.begin.split(":")[0]) +
+                parseInt(elt.begin.split(":")[1]) / 60;
+                const finish =
+                parseInt(elt.end.split(":")[0]) + parseInt(elt.end.split(":")[1]) / 60;
+                if (idx < id && start <= currentStart && finish >= currentStart) return elt;
+            });
+            if (conflicts.length) {
+                meeting.style.width = `${Math.floor(100 / (1 + conflicts.length))}%`;
+                meeting.style.left = `${Math.ceil(100 - 100 / (1 + conflicts.length))}%`;
+            }
+            const detailsTitle = document.createElement("div");
+            detailsTitle.innerHTML = `${e.title} <br /> ${e.begin}-${e.end}`;
+            detailsTitle.className = "details";
+            meeting.appendChild(detailsTitle);
+            const box = document.querySelector(
+                `.s-${parseInt(e.begin.split(":")[0]) + 1}-00 > .box`
+            );
+            box.appendChild(meeting);
+            });
         </script>
     </body>
 </html>
